@@ -1,6 +1,13 @@
-public class Contato {
+package dominio;
+
+public class Contato{
     private String nome;
     private String telefone;
+
+    public Contato(String nome, String telefone) {
+        this.nome = nome;
+        this.telefone = telefone;
+    }
 
     public String getNome() {
         return nome;
@@ -20,6 +27,6 @@ public class Contato {
 
     @Override
     public String toString() {
-        return nome + "-" + telefone;
+        return nome + " - " + telefone;
     }
 }

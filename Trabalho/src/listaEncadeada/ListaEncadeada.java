@@ -1,6 +1,9 @@
-import java.util.Comparator;
+package listaEncadeada;
 
-public class ListaEncadeada<T extends Comparable> implements IColecao<T> {
+import java.util.Comparator;
+import colecao.IColecao;
+
+public class ListaEncadeada<T> implements IColecao<T> {
     private No<T> primeiro, ultimo;
     private int quantidade;
     private final boolean ordenada;
@@ -71,22 +74,28 @@ public class ListaEncadeada<T extends Comparable> implements IColecao<T> {
 
     @Override
     public T pesquisar(T elemento) {
+        long inicio = System.nanoTime();
         No<T> aux = this.primeiro;
         while (aux != null) {
-            if (aux.getValor().equals(elemento)) {
+            if (comparador.compare(aux.getValor(), elemento) == 0) {
+                long tempo = System.nanoTime() - inicio;
+                imprimirTempo("Tempo de pesquisa", tempo);
                 return aux.getValor();
             }
             aux = aux.getProximo();
         }
+        long tempo = System.nanoTime() - inicio;
+        imprimirTempo("Tempo de pesquisa", tempo);
         return null;
     }
 
     @Override
     public boolean remover(T elemento) {
-        No aux = this.primeiro;
-        No anterior = null;
+        long inicio = System.nanoTime();
+        No<T> aux = this.primeiro;
+        No<T> anterior = null;
         while (aux != null) {
-            if (aux.getValor().equals(elemento)) {
+            if (comparador.compare(aux.getValor(), elemento) == 0) {
                 if (aux == this.primeiro) {
                     this.primeiro = this.primeiro.getProximo();
                     if (aux == this.ultimo) {
@@ -99,12 +108,22 @@ public class ListaEncadeada<T extends Comparable> implements IColecao<T> {
                     }
                 }
                 this.quantidade--;
+                long tempo = System.nanoTime() - inicio;
+                imprimirTempo("Tempo de remoção", tempo);
                 return true;
             }
             anterior = aux;
             aux = aux.getProximo();
         }
+        long tempo = System.nanoTime() - inicio;
+        imprimirTempo("Tempo de remoção", tempo);
         return false;
+    }
+
+    private void imprimirTempo(String nome, long tempoNano) {
+        double tempoEmSegundos = tempoNano / 1_000_000_000.0;
+        double tempoEmMilissegundos = tempoNano / 1_000_000.0;
+        System.out.println(nome + ": " + String.format("%.6f s | %.3f ms", tempoEmSegundos, tempoEmMilissegundos));
     }
 
     @Override

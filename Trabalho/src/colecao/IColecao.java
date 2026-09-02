@@ -1,3 +1,5 @@
+package colecao;
+
 /**
  *
  * @author victoriocarvalho

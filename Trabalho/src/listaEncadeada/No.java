@@ -1,3 +1,5 @@
+package listaEncadeada;
+
 public class No<T>  {
     private No<T> proximo;
     private T valor;
