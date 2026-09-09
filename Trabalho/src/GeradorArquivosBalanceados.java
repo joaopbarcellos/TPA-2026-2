@@ -7,8 +7,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Random;
 
 public class GeradorArquivosBalanceados {
-    private static final int NUM_REGISTROS = 10000;
-    private static final String NOME_ARQUIVO = "entrada.txt";
+    private static final int NUM_REGISTROS = 50000;
+    private static final String NOME_ARQUIVO = "arq50k.txt";
 
     private static final String[] PRENOMES = {
             "Ana", "Bruno", "Carlos", "Daniela", "Eduardo", "Fernanda", "Gabriel", "Helena", "Isabela", "Joao",
