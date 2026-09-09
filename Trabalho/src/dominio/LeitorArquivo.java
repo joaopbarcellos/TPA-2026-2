@@ -14,18 +14,9 @@ public class LeitorArquivo {
     public void lerArquivo(IColecao<Contato> listaNome, IColecao<Contato> listaTelefone) {
         long inicio = System.nanoTime();
         try (BufferedReader reader = Files.newBufferedReader(Path.of(NOME_ARQUIVO), StandardCharsets.UTF_8)) {
-            String linha = reader.readLine();
+            int numRegistros = Integer.parseInt(reader.readLine().trim());
+            String linha;
             Contato contato;
-            if (linha != null && linha.matches("\\d+")) {
-                int numRegistros = Integer.parseInt(linha.trim());
-            } else if (linha != null) {
-                contato = processarLinha(linha);
-                if (contato != null) {
-                    listaNome.adicionar(contato);
-                    listaTelefone.adicionar(contato);
-                }
-            }
-
             while ((linha = reader.readLine()) != null) {
                 if (linha.trim().isEmpty()) {
                     continue;
