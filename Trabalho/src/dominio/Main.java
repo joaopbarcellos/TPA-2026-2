@@ -81,9 +81,14 @@ public class Main {
                         System.out.println("Digite o telefone do contato a ser removido:");
                         String telefoneRemover = lerLinha(scanner);
                         Contato contatoRemover = new Contato("", telefoneRemover);
-                        boolean removido = listaContatoPorTelefone.remover(contatoRemover);
+                        Contato resultadoTelefone = listaContatoPorTelefone.pesquisar(contatoRemover);
+                        if (resultadoTelefone == null) {
+                            System.out.println("Contato não encontrado");
+                            break;
+                        }
+                        boolean removido = listaContatoPorTelefone.remover(resultadoTelefone);
                         if (removido) {
-                            listaContatoPorNome.remover(contatoRemover);
+                            listaContatoPorNome.remover(resultadoTelefone);
                             System.out.println("Contato removido com sucesso.");
                             break;
                         }
