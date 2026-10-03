@@ -15,4 +15,4 @@ O código está estruturado em pacotes, sendo eles:
 - `colecao/`: Contém a interface que define os métodos para manipulação de coleções de dados.
 - `listaEncadeada/`: Contém a implementação da lista encadeada, que é utilizada para armazenar os dados do programa.
 
-Além disso, possui a Classe `GeradorArquivosBalanceados`, utilizada para gerar arquivos balanceados para os casos de teste.
+Além disso, possui a Classe `geradorArquivos.GeradorArquivosAntigo`, utilizada para gerar arquivos balanceados para os casos de teste.

@@ -40,13 +40,13 @@ public class LeitorArquivo {
 
     private Contato processarLinha(String linha) {
         String[] partes = linha.split(";");
-        if (partes.length != 2) {
+        if (partes.length != 3) {
             System.err.println("Linha inválida: " + linha);
             return null;
         }
 
-        String nome = partes[0].trim();
-        String telefone = partes[1].trim();
+        String nome = partes[1].trim();
+        String telefone = partes[2].trim();
         Contato contato = new Contato(nome, telefone);
         return contato;
     }
