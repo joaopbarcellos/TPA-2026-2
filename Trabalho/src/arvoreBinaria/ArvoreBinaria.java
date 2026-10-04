@@ -25,7 +25,7 @@ public class ArvoreBinaria<T> extends ArvoreBinariaBase<T> {
             return "[]";
         }
 
-        StringBuilder sb = new StringBuilder("[");
+        String resultado = "[";
         Queue<No<T>> fila = new LinkedList<>();
         fila.add(this.raiz);
         boolean primeiro = true;
@@ -34,15 +34,15 @@ public class ArvoreBinaria<T> extends ArvoreBinariaBase<T> {
             int quantidadeNoNivel = fila.size();
 
             if (!primeiro) {
-                sb.append("\n");
+                    resultado += "\n";
             }
 
                 for (int i =0; i < quantidadeNoNivel; i++) {
                     No<T> atual = fila.poll();
                     if (i > 0) {
-                        sb.append(", ");
+                        resultado += ", ";
                     }
-                    sb.append(atual.getValor());
+                    resultado += atual.getValor().toString();
 
                     if (atual.getEsquerda() != null) {
                     fila.add(atual.getEsquerda());
@@ -55,27 +55,28 @@ public class ArvoreBinaria<T> extends ArvoreBinariaBase<T> {
             primeiro = false;
         }
 
-        sb.append("]");
-        return sb.toString();
+        resultado += "]";
+        return resultado;
     }
 
     public String caminharEmOrdem() {
-        StringBuilder sb = new StringBuilder("[");
-        caminharEmOrdem(this.raiz, sb);
-        sb.append("]");
-        return sb.toString();
+        return "[" + caminharEmOrdem(this.raiz, true) + "]";
     }
 
-    private void caminharEmOrdem(No<T> no, StringBuilder sb) {
+    private String caminharEmOrdem(No<T> no, boolean isPrimeiroNo) {
         if (no == null) {
-            return;
+            return "";
         }
-        caminharEmOrdem(no.getEsquerda(), sb);
-        if (sb.length() > 1) {
-            sb.append(", ");
+
+        String esquerda = caminharEmOrdem(no.getEsquerda(), isPrimeiroNo);
+        boolean temEsquerda = !esquerda.isEmpty();
+        String atual = no.getValor().toString();
+        if (!isPrimeiroNo || temEsquerda) {
+            atual = ", " + atual;
         }
-        sb.append(no.getValor());
-        caminharEmOrdem(no.getDireita(), sb);
+        String direita = caminharEmOrdem(no.getDireita(), false);
+
+        return esquerda + atual + direita;
     }
 
     @Override
