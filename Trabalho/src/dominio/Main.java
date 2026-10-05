@@ -28,8 +28,8 @@ public class Main {
                 listaContatoPorTelefone = new ListaEncadeada<Contato>(new ComparadorContatoPorTelefone(), false);
                 listaContatoPorNome = new ListaEncadeada<Contato>(new ComparadorContatoPorNome(), false);
             } else {
-                listaContatoPorTelefone = new ArvoreBinaria<>(new ComparadorContatoPorTelefone());
-                listaContatoPorNome = new ArvoreBinaria<>(new ComparadorContatoPorNome());
+                listaContatoPorTelefone = new ArvoreBinaria<Contato>(new ComparadorContatoPorTelefone());
+                listaContatoPorNome = new ArvoreBinaria<Contato>(new ComparadorContatoPorNome());
             }
 
             int op = 0;
