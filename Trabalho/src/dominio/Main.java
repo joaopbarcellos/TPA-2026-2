@@ -64,45 +64,79 @@ public class Main {
                         System.out.println("Digite o nome do contato a ser pesquisado:");
                         String nomePesquisa = lerLinha(scanner);
                         Contato contatoNome = new Contato(nomePesquisa, "");
+                        inicioAdicao = System.nanoTime();
                         Contato resultadoNome = listaContatoPorNome.pesquisar(contatoNome);
                         if (resultadoNome != null) {
                             System.out.println("Contato encontrado: " + resultadoNome);
+                            tempoAdicao = System.nanoTime() - inicioAdicao;
+                            tempoEmSegundos = tempoAdicao / 1_000_000_000.0;
+                            tempoEmMilissegundos = tempoAdicao / 1_000_000.0;
+                            System.out.println("Tempo de pesquisa: " + String.format("%.6f s | %.3f ms", tempoEmSegundos, tempoEmMilissegundos));
                             break;
                         }
                         System.out.println("Contato não encontrado.");
+                        tempoAdicao = System.nanoTime() - inicioAdicao;
+                        tempoEmSegundos = tempoAdicao / 1_000_000_000.0;
+                        tempoEmMilissegundos = tempoAdicao / 1_000_000.0;
+                        System.out.println("Tempo de pesquisa: " + String.format("%.6f s | %.3f ms", tempoEmSegundos, tempoEmMilissegundos));
                         break;
                     case 4:
                         System.out.println("Digite o telefone do contato a ser pesquisado:");
                         String telefonePesquisa = lerLinha(scanner);
                         Contato contatoTelefone = new Contato("", telefonePesquisa);
+                        inicioAdicao = System.nanoTime();
                         Contato resultadoTelefone = listaContatoPorTelefone.pesquisar(contatoTelefone);
                         if (resultadoTelefone != null) {
                             System.out.println("Contato encontrado: " + resultadoTelefone);
+                            tempoAdicao = System.nanoTime() - inicioAdicao;
+                            tempoEmSegundos = tempoAdicao / 1_000_000_000.0;
+                            tempoEmMilissegundos = tempoAdicao / 1_000_000.0;
+                            System.out.println("Tempo de pesquisa: " + String.format("%.6f s | %.3f ms", tempoEmSegundos, tempoEmMilissegundos));
                             break;
                         }
                         System.out.println("Contato não encontrado.");
+
+                        tempoAdicao = System.nanoTime() - inicioAdicao;
+                        tempoEmSegundos = tempoAdicao / 1_000_000_000.0;
+                        tempoEmMilissegundos = tempoAdicao / 1_000_000.0;
+                        System.out.println("Tempo de pesquisa: " + String.format("%.6f s | %.3f ms", tempoEmSegundos, tempoEmMilissegundos));
                         break;
                     case 5:
                         System.out.println("Digite o telefone do contato a ser removido:");
                         String telefoneRemover = lerLinha(scanner);
                         Contato contatoRemover = new Contato("", telefoneRemover);
+                        inicioAdicao = System.nanoTime();
                         resultadoTelefone = listaContatoPorTelefone.pesquisar(contatoRemover);
                         if (resultadoTelefone == null) {
                             System.out.println("Contato não encontrado");
+                            tempoAdicao = System.nanoTime() - inicioAdicao;
+                            tempoEmSegundos = tempoAdicao / 1_000_000_000.0;
+                            tempoEmMilissegundos = tempoAdicao / 1_000_000.0;
+                            System.out.println("Tempo de pesquisa: " + String.format("%.6f s | %.3f ms", tempoEmSegundos, tempoEmMilissegundos));
                             break;
                         }
+                        inicioAdicao = System.nanoTime();
                         boolean removido = listaContatoPorTelefone.remover(resultadoTelefone);
                         if (removido) {
                             listaContatoPorNome.remover(resultadoTelefone);
                             System.out.println("Contato removido com sucesso.");
+                            tempoAdicao = System.nanoTime() - inicioAdicao;
+                            tempoEmSegundos = tempoAdicao / 1_000_000_000.0;
+                            tempoEmMilissegundos = tempoAdicao / 1_000_000.0;
+                            System.out.println("Tempo de remoção: " + String.format("%.6f s | %.3f ms", tempoEmSegundos, tempoEmMilissegundos));
                             break;
                         }
                         System.out.println("Contato não encontrado.");
+                        tempoAdicao = System.nanoTime() - inicioAdicao;
+                        tempoEmSegundos = tempoAdicao / 1_000_000_000.0;
+                        tempoEmMilissegundos = tempoAdicao / 1_000_000.0;
+                        System.out.println("Tempo de pesquisa: " + String.format("%.6f s | %.3f ms", tempoEmSegundos, tempoEmMilissegundos));
                         break;
                     case 6:
                         System.out.println("Digite o nome do contato a ser alterado:");
                         String nomeAlterar = lerLinha(scanner);
                         Contato contatoAlterar = new Contato(nomeAlterar, "");
+                        inicioAdicao = System.nanoTime();
                         Contato resultadoAlterar = listaContatoPorNome.pesquisar(contatoAlterar);
                         if (resultadoAlterar != null) {
                             System.out.println("Contato encontrado: " + resultadoAlterar);
@@ -116,9 +150,17 @@ public class Main {
                             listaContatoPorNome.adicionar(contatoAtualizado);
                             listaContatoPorTelefone.adicionar(contatoAtualizado);
                             System.out.println("Contato atualizado com sucesso.");
+                            tempoAdicao = System.nanoTime() - inicioAdicao;
+                            tempoEmSegundos = tempoAdicao / 1_000_000_000.0;
+                            tempoEmMilissegundos = tempoAdicao / 1_000_000.0;
+                            System.out.println("Tempo de alteração: " + String.format("%.6f s | %.3f ms", tempoEmSegundos, tempoEmMilissegundos));
                             break;
                         }
                         System.out.println("Contato não encontrado.");
+                        tempoAdicao = System.nanoTime() - inicioAdicao;
+                        tempoEmSegundos = tempoAdicao / 1_000_000_000.0;
+                        tempoEmMilissegundos = tempoAdicao / 1_000_000.0;
+                        System.out.println("Tempo de pesquisa: " + String.format("%.6f s | %.3f ms", tempoEmSegundos, tempoEmMilissegundos));
                         break;
                 }
             }

@@ -100,7 +100,6 @@ public class ArvoreBinaria<T> extends ArvoreBinariaBase<T> {
 
     @Override
     public T pesquisar(T valor) {
-        long inicio = System.nanoTime();
         No<T> atual = this.raiz;
         while (atual != null) {
             int comparacao = comparador.compare(valor, atual.getValor());
@@ -109,17 +108,12 @@ public class ArvoreBinaria<T> extends ArvoreBinariaBase<T> {
             }
             atual = comparacao < 0 ? atual.getEsquerda() : atual.getDireita();
         }
-        long tempo = System.nanoTime() - inicio;
-        imprimirTempo("Tempo de pesquisa", tempo);
         return null;
     }
 
     @Override
     public boolean remover(T valor) {
-        long inicio = System.nanoTime();
         if (this.raiz == null) {
-            long tempo = System.nanoTime() - inicio;
-            imprimirTempo("Tempo de remoção", tempo);
             return false;
         }
 
@@ -136,8 +130,6 @@ public class ArvoreBinaria<T> extends ArvoreBinariaBase<T> {
         }
 
         if (atual == null) {
-            long tempo = System.nanoTime() - inicio;
-            imprimirTempo("Tempo de remoção", tempo);
             return false;
         }
 
@@ -164,8 +156,6 @@ public class ArvoreBinaria<T> extends ArvoreBinariaBase<T> {
             pai.setDireita(filho);
         }
 
-        long tempo = System.nanoTime() - inicio;
-        imprimirTempo("Tempo de remoção", tempo);
         return true;
     }
 
@@ -188,9 +178,4 @@ public class ArvoreBinaria<T> extends ArvoreBinariaBase<T> {
         return 1 + quantidadeNos(no.getEsquerda()) + quantidadeNos(no.getDireita());
     }
 
-    private void imprimirTempo(String nome, long tempoNano) {
-        double tempoEmSegundos = tempoNano / 1_000_000_000.0;
-        double tempoEmMilissegundos = tempoNano / 1_000_000.0;
-        System.out.println(nome + ": " + String.format("%.6f s | %.3f ms", tempoEmSegundos, tempoEmMilissegundos));
-    }
 }
