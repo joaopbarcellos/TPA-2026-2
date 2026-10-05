@@ -7,13 +7,9 @@ import java.util.Queue;
 public class ArvoreBinaria<T> extends ArvoreBinariaBase<T> {
     private No<T> raiz;
 
-    protected ArvoreBinaria(Comparator<T> comparator) {
+    public ArvoreBinaria(Comparator<T> comparator) {
         super(comparator);
         this.raiz = null;
-    }
-
-    public void setRaiz(No<T> raiz) {
-        this.raiz = raiz;
     }
 
     public int altura() {
@@ -25,7 +21,7 @@ public class ArvoreBinaria<T> extends ArvoreBinariaBase<T> {
             return "[]";
         }
 
-        String resultado = "[";
+        StringBuilder resultado = new StringBuilder("[");
         Queue<No<T>> fila = new LinkedList<>();
         fila.add(this.raiz);
         boolean primeiro = true;
@@ -34,15 +30,13 @@ public class ArvoreBinaria<T> extends ArvoreBinariaBase<T> {
             int quantidadeNoNivel = fila.size();
 
             if (!primeiro) {
-                    resultado += "\n";
+                resultado.append("\n");
             }
 
                 for (int i =0; i < quantidadeNoNivel; i++) {
                     No<T> atual = fila.poll();
-                    if (i > 0) {
-                        resultado += ", ";
-                    }
-                    resultado += atual.getValor().toString();
+                if (i > 0) resultado.append(", ");
+                resultado.append(atual.getValor());
 
                     if (atual.getEsquerda() != null) {
                     fila.add(atual.getEsquerda());
@@ -55,28 +49,21 @@ public class ArvoreBinaria<T> extends ArvoreBinariaBase<T> {
             primeiro = false;
         }
 
-        resultado += "]";
-        return resultado;
+        return resultado.append("]").toString();
     }
 
     public String caminharEmOrdem() {
-        return "[" + caminharEmOrdem(this.raiz, true) + "]";
+        StringBuilder resultado = new StringBuilder("[");
+        caminharEmOrdem(this.raiz, resultado);
+        return resultado.append("]").toString();
     }
 
-    private String caminharEmOrdem(No<T> no, boolean isPrimeiroNo) {
-        if (no == null) {
-            return "";
-        }
-
-        String esquerda = caminharEmOrdem(no.getEsquerda(), isPrimeiroNo);
-        boolean temEsquerda = !esquerda.isEmpty();
-        String atual = no.getValor().toString();
-        if (!isPrimeiroNo || temEsquerda) {
-            atual = ", " + atual;
-        }
-        String direita = caminharEmOrdem(no.getDireita(), false);
-
-        return esquerda + atual + direita;
+    private void caminharEmOrdem(No<T> no, StringBuilder resultado) {
+        if (no == null) return;
+        caminharEmOrdem(no.getEsquerda(), resultado);
+        if (resultado.length() > 1) resultado.append(", ");
+        resultado.append(no.getValor());
+        caminharEmOrdem(no.getDireita(), resultado);
     }
 
     @Override

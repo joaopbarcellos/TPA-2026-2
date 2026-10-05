@@ -3,6 +3,7 @@ package dominio;
 import java.util.Scanner;
 import colecao.IColecao;
 import listaEncadeada.ListaEncadeada;
+import arvoreBinaria.ArvoreBinaria;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
@@ -14,17 +15,21 @@ public class Main {
             System.out.println("Qual lista encadeada deseja utilizar?");
             System.out.println("1 - Lista Encadeada Ordenada");
             System.out.println("2 - Lista Encadeada Não Ordenada");
+            System.out.println("3 - Árvore Binária");
             int escolha = lerInteiro(scanner);
-            while (escolha != 1 && escolha != 2) {
-                System.out.println("Escolha inválida. Digite 1 ou 2.");
+            while (escolha < 1 || escolha > 3) {
+                System.out.println("Escolha inválida. Digite 1, 2 ou 3.");
                 escolha = lerInteiro(scanner);
             }
             if (escolha == 1) {
                 listaContatoPorTelefone = new ListaEncadeada<Contato>(new ComparadorContatoPorTelefone(), true);
                 listaContatoPorNome = new ListaEncadeada<Contato>(new ComparadorContatoPorNome(), true);
-            } else {
+            } else if (escolha == 2) {
                 listaContatoPorTelefone = new ListaEncadeada<Contato>(new ComparadorContatoPorTelefone(), false);
                 listaContatoPorNome = new ListaEncadeada<Contato>(new ComparadorContatoPorNome(), false);
+            } else {
+                listaContatoPorTelefone = new ArvoreBinaria<>(new ComparadorContatoPorTelefone());
+                listaContatoPorNome = new ArvoreBinaria<>(new ComparadorContatoPorNome());
             }
 
             int op = 0;
