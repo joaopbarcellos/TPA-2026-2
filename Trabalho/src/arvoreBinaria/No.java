@@ -3,11 +3,13 @@ package arvoreBinaria;
 public class No<T>  {
     private No<T> direita, esquerda;
     private T valor;
+    private int fb;
 
     public No(T valor) {
         this.direita = null;
         this.esquerda = null;
         this.valor = valor;
+        this.fb = 0;
     }
 
     public No<T> getDireita() {
@@ -32,5 +34,13 @@ public class No<T>  {
 
     public void setValor(T valor) {
         this.valor = valor;
+    }
+
+    public int getFb() {
+        return fb;
+    }
+
+    public void setFb(int fb) {
+        this.fb = fb;
     }
 }
