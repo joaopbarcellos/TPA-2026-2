@@ -14,10 +14,29 @@ public class ArvoreAVL<T> extends ArvoreBinaria<T> {
     }
 
     @Override
-    public boolean adicionar(T novoValor) {
-        this.cresceu = false;
-        this.raiz = inserirAVL(this.raiz, novoValor);
-        return true;
+    protected No<T> addRecursao(No<T> atual, No<T> novo) {
+        if (atual == null) {
+            return novo;
+        }
+
+        atual = super.addRecursao(atual, novo);
+
+        int fator = atual.fatorBalanceamento();
+        if (fator > 1) {
+            if (atual.getDireita() != null && atual.getDireita().fatorBalanceamento() > 0) {
+                atual = rotacaoEsquerda(atual);
+            } else {
+                atual = rotacaoDireitaEsquerda(atual);
+            }
+        } else if (fator < -1) {
+            if (atual.getEsquerda() != null && atual.getEsquerda().fatorBalanceamento() < 0) {
+                atual = rotacaoDireita(atual);
+            } else {
+                atual = rotacaoEsquerdaDireita(atual);
+            }
+        }
+
+        return atual;
     }
 
     private No<T> inserirAVL(No<T> no, T valor) {
@@ -193,22 +212,23 @@ public class ArvoreAVL<T> extends ArvoreBinaria<T> {
         return atual;
     }
 
-    private No<T> rotacaoDireita(No<T> y) {
-        No<T> x = y.getEsquerda();
-        y.setEsquerda(x.getDireita());
-        x.setDireita(y);
-        x.setFb(0);
-        y.setFb(0);
-        return x;
+
+    private No<T> rotacaoDireita(No<T> r) {
+        No<T> f = r.getEsquerda();
+        r.setEsquerda(f.getDireita());
+        f.setDireita(r);
+        f.setFb(0);
+        r.setFb(0);
+        return f;
     }
 
-    private No<T> rotacaoEsquerda(No<T> y) {
-        No<T> x = y.getDireita();
-        y.setDireita(x.getEsquerda());
-        x.setEsquerda(y);
-        x.setFb(0);
-        y.setFb(0);
-        return x;
+    private No<T> rotacaoEsquerda(No<T> r) {
+        No<T> f = r.getDireita();
+        r.setDireita(f.getEsquerda());
+        f.setEsquerda(r);
+        f.setFb(0);
+        r.setFb(0);
+        return f;
     }
 
     private No<T> rotacaoEsquerdaDireita(No<T> y) {

@@ -1,6 +1,8 @@
 package dominio;
 
 import java.util.Scanner;
+
+import arvoreBinaria.ArvoreAVL;
 import colecao.IColecao;
 import listaEncadeada.ListaEncadeada;
 import arvoreBinaria.ArvoreBinaria;
@@ -16,8 +18,9 @@ public class Main {
             System.out.println("1 - Lista Encadeada Ordenada");
             System.out.println("2 - Lista Encadeada Não Ordenada");
             System.out.println("3 - Árvore Binária");
+            System.out.println("4 - Árvore AVL");
             int escolha = lerInteiro(scanner);
-            while (escolha < 1 || escolha > 3) {
+            while (escolha < 1 || escolha > 4) {
                 System.out.println("Escolha inválida. Digite 1, 2 ou 3.");
                 escolha = lerInteiro(scanner);
             }
@@ -27,9 +30,12 @@ public class Main {
             } else if (escolha == 2) {
                 listaContatoPorTelefone = new ListaEncadeada<Contato>(new ComparadorContatoPorTelefone(), false);
                 listaContatoPorNome = new ListaEncadeada<Contato>(new ComparadorContatoPorNome(), false);
-            } else {
+            } else if (escolha == 3) {
                 listaContatoPorTelefone = new ArvoreBinaria<Contato>(new ComparadorContatoPorTelefone());
                 listaContatoPorNome = new ArvoreBinaria<Contato>(new ComparadorContatoPorNome());
+            } else {
+                listaContatoPorTelefone = new ArvoreAVL<Contato>(new ComparadorContatoPorTelefone());
+                listaContatoPorNome = new ArvoreAVL<Contato>(new ComparadorContatoPorNome());
             }
 
             int op = 0;
@@ -42,6 +48,7 @@ public class Main {
                         LeitorArquivo leitor = new LeitorArquivo();
                         leitor.lerArquivo(listaContatoPorNome, listaContatoPorTelefone);
                         System.out.println(listaContatoPorNome.quantidadeNos() + " contatos carregados com sucesso!");
+                        System.out.println(listaContatoPorNome);
                         break;
                     case 2:
                         System.out.println("Digite o nome do contato:");

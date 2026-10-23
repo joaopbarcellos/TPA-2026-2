@@ -43,4 +43,26 @@ public class No<T>  {
     public void setFb(int fb) {
         this.fb = fb;
     }
+
+    public int obterAltura() {
+        return obterAltura(this);
+    }
+
+    private int obterAltura(No<T> no) {
+        if (no == null) {
+            return -1;
+        }
+
+        int hd = obterAltura(no.getDireita());
+        int he = obterAltura(no.getEsquerda());
+
+        if (hd > he) {
+            return hd + 1;
+        }
+        return he + 1;
+    }
+
+    public int fatorBalanceamento() {
+        return obterAltura(this.direita) - obterAltura(this.esquerda);
+    }
 }
