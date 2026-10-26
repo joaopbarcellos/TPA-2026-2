@@ -48,7 +48,6 @@ public class Main {
                         LeitorArquivo leitor = new LeitorArquivo();
                         leitor.lerArquivo(listaContatoPorNome, listaContatoPorTelefone);
                         System.out.println(listaContatoPorNome.quantidadeNos() + " contatos carregados com sucesso!");
-                        System.out.println(listaContatoPorNome);
                         break;
                     case 2:
                         System.out.println("Digite o nome do contato:");
