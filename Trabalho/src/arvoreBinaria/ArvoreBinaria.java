@@ -67,35 +67,33 @@ public class ArvoreBinaria<T> extends ArvoreBinariaBase<T> {
     }
 
     @Override
-    public String toString() {
-        return super.toString();
-    }
-
-    @Override
     public boolean adicionar(T novoValor) {
-        No<T> novoNo = new No<>(novoValor);
+        No<T> novoNo = new No<T>(novoValor);
         if (this.raiz == null) {
             this.raiz = novoNo;
             return true;
         }
 
-        No<T> atual = this.raiz;
-        while (true) {
-            int comparacao = comparador.compare(novoValor, atual.getValor());
-            if (comparacao <= 0) {
-                if (atual.getEsquerda() == null) {
-                    atual.setEsquerda(novoNo);
-                    return true;
-                }
-                atual = atual.getEsquerda();
+        this.raiz = addRecursao(this.raiz, novoNo);
+        return true;
+    }
+
+    protected No<T> addRecursao(No<T> atual, No<T> novo) {
+        if (comparador.compare(novo.getValor(), atual.getValor()) < 0) {
+            if (atual.getEsquerda() == null) {
+                atual.setEsquerda(novo);
             } else {
-                if (atual.getDireita() == null) {
-                    atual.setDireita(novoNo);
-                    return true;
-                }
-                atual = atual.getDireita();
+                atual.setEsquerda(addRecursao(atual.getEsquerda(), novo));
+            }
+        } else {
+            if (atual.getDireita() == null) {
+                atual.setDireita(novo);
+            } else {
+                atual.setDireita(addRecursao(atual.getDireita(), novo));
             }
         }
+
+        return atual;
     }
 
     @Override
