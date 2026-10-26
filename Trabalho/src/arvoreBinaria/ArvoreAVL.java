@@ -3,14 +3,12 @@ package arvoreBinaria;
 import java.util.Comparator;
 
 public class ArvoreAVL<T> extends ArvoreBinaria<T> {
-    private No<T> raiz;
-    private boolean cresceu;
     private boolean diminuiu;
     private boolean removeu;
 
     public ArvoreAVL(Comparator<T> comparador) {
         super(comparador);
-        this.raiz = null;
+        this.setRaiz(null);
     }
 
     @Override
@@ -39,72 +37,11 @@ public class ArvoreAVL<T> extends ArvoreBinaria<T> {
         return atual;
     }
 
-    private No<T> inserirAVL(No<T> no, T valor) {
-        if (no == null) {
-            No<T> novo = new No<>(valor);
-            novo.setFb(0);
-            this.cresceu = true;
-            return novo;
-        }
-
-        int comparacao = comparador.compare(valor, no.getValor());
-        if (comparacao <= 0) {
-            no.setEsquerda(inserirAVL(no.getEsquerda(), valor));
-            if (this.cresceu) {
-                switch (no.getFb()) {
-                    case -1:
-                        if (no.getEsquerda().getFb() == -1) {
-                            no = rotacaoDireita(no);
-                        } else {
-                            no = rotacaoEsquerdaDireita(no);
-                        }
-                        this.cresceu = false;
-                        break;
-                    case 0:
-                        no.setFb(-1);
-                        this.cresceu = true;
-                        break;
-                    case 1:
-                        no.setFb(0);
-                        this.cresceu = false;
-                        break;
-                    default:
-                        break;
-                }
-            }
-        } else {
-            no.setDireita(inserirAVL(no.getDireita(), valor));
-            if (this.cresceu) {
-                switch (no.getFb()) {
-                    case -1:
-                        no.setFb(0);
-                        this.cresceu = false;
-                        break;
-                    case 0:
-                        no.setFb(1);
-                        this.cresceu = true;
-                        break;
-                    case 1:
-                        if (no.getDireita().getFb() == 1) {
-                            no = rotacaoEsquerda(no);
-                        } else {
-                            no = rotacaoDireitaEsquerda(no);
-                        }
-                        this.cresceu = false;
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-        return no;
-    }
-
     @Override
     public boolean remover(T valor) {
         this.diminuiu = false;
         this.removeu = false;
-        this.raiz = removerAVL(this.raiz, valor);
+        this.setRaiz(removerAVL(this.getRaiz(), valor));
         return this.removeu;
     }
 
@@ -211,7 +148,6 @@ public class ArvoreAVL<T> extends ArvoreBinaria<T> {
         }
         return atual;
     }
-
 
     private No<T> rotacaoDireita(No<T> r) {
         No<T> f = r.getEsquerda();

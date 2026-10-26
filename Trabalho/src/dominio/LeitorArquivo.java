@@ -9,7 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class LeitorArquivo {
-    private static final String NOME_ARQUIVO = "entrada.txt";
+    private static final String NOME_ARQUIVO = "arq200kDesbalanceado.txt";
 
     public void lerArquivo(IColecao<Contato> listaNome, IColecao<Contato> listaTelefone) {
         long inicio = System.nanoTime();

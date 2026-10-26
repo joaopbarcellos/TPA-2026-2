@@ -176,4 +176,12 @@ public class ArvoreBinaria<T> extends ArvoreBinariaBase<T> {
         return 1 + quantidadeNos(no.getEsquerda()) + quantidadeNos(no.getDireita());
     }
 
+    public No<T> getRaiz() {
+        return raiz;
+    }
+
+    public void setRaiz(No<T> raiz) {
+        this.raiz = raiz;
+    }
+
 }
