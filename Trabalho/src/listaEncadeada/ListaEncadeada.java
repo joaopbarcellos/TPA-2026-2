@@ -76,7 +76,14 @@ public class ListaEncadeada<T> implements IColecao<T> {
     public T pesquisar(T elemento) {
         No<T> aux = this.primeiro;
         while (aux != null) {
-            if (comparador.compare(aux.getValor(), elemento) == 0) {
+            boolean encontrado;
+            if (comparador != null) {
+                encontrado = comparador.compare(aux.getValor(), elemento) == 0;
+            } else {
+                encontrado = aux.getValor() == elemento
+                        || (aux.getValor() != null && aux.getValor().equals(elemento));
+            }
+            if (encontrado) {
                 return aux.getValor();
             }
             aux = aux.getProximo();
@@ -89,7 +96,14 @@ public class ListaEncadeada<T> implements IColecao<T> {
         No<T> aux = this.primeiro;
         No<T> anterior = null;
         while (aux != null) {
-            if (comparador.compare(aux.getValor(), elemento) == 0) {
+            boolean encontrado;
+            if (comparador != null) {
+                encontrado = comparador.compare(aux.getValor(), elemento) == 0;
+            } else {
+                encontrado = aux.getValor() == elemento
+                        || (aux.getValor() != null && aux.getValor().equals(elemento));
+            }
+            if (encontrado) {
                 if (aux == this.primeiro) {
                     this.primeiro = this.primeiro.getProximo();
                     if (aux == this.ultimo) {
@@ -113,6 +127,10 @@ public class ListaEncadeada<T> implements IColecao<T> {
     @Override
     public int quantidadeNos() {
         return this.quantidade;
+    }
+
+    public No<T> getPrimeiro() {
+        return this.primeiro;
     }
 
     @Override
