@@ -4,6 +4,7 @@ import java.util.Comparator;
 
 public class ArvoreAVL<T> extends ArvoreBinaria<T> {
     private boolean diminuiu;
+    private boolean aumentou;
     private boolean removeu;
 
     public ArvoreAVL(Comparator<T> comparador) {
@@ -14,23 +15,64 @@ public class ArvoreAVL<T> extends ArvoreBinaria<T> {
     @Override
     protected No<T> addRecursao(No<T> atual, No<T> novo) {
         if (atual == null) {
+            aumentou = true;
             return novo;
         }
 
-        atual = super.addRecursao(atual, novo);
+        int comparacao = comparador.compare(novo.getValor(), atual.getValor());
 
-        int fator = atual.fatorBalanceamento();
-        if (fator > 1) {
-            if (atual.getDireita() != null && atual.getDireita().fatorBalanceamento() > 0) {
-                atual = rotacaoEsquerda(atual);
-            } else {
-                atual = rotacaoDireitaEsquerda(atual);
+        if (comparacao < 0) {
+            atual.setEsquerda(addRecursao(atual.getEsquerda(), novo));
+
+            if (aumentou) {
+                switch (atual.getFb()) {
+                    case 1:
+                        atual.setFb(0);
+                        aumentou = false;
+                        break;
+
+                    case 0:
+                        atual.setFb(-1);
+                        aumentou = true;
+                        break;
+
+                    case -1:
+                        if (atual.getEsquerda().getFb() <= 0) {
+                            atual = rotacaoDireita(atual);
+                        } else {
+                            atual = rotacaoEsquerdaDireita(atual);
+                        }
+
+                        aumentou = false;
+                        break;
+                }
             }
-        } else if (fator < -1) {
-            if (atual.getEsquerda() != null && atual.getEsquerda().fatorBalanceamento() < 0) {
-                atual = rotacaoDireita(atual);
-            } else {
-                atual = rotacaoEsquerdaDireita(atual);
+
+        } else {
+            atual.setDireita(addRecursao(atual.getDireita(), novo));
+
+            if (aumentou) {
+                switch (atual.getFb()) {
+                    case -1:
+                        atual.setFb(0);
+                        aumentou = false;
+                        break;
+
+                    case 0:
+                        atual.setFb(1);
+                        aumentou = true;
+                        break;
+
+                    case 1:
+                        if (atual.getDireita().getFb() >= 0) {
+                            atual = rotacaoEsquerda(atual);
+                        } else {
+                            atual = rotacaoDireitaEsquerda(atual);
+                        }
+
+                        aumentou = false;
+                        break;
+                }
             }
         }
 

@@ -29,6 +29,22 @@ public class ListaEncadeada<T> implements IColecao<T> {
         return inserirElementoNaoOrdenado(elemento);
     }
 
+    /**
+     * Insere um elemento no início da lista (útil para inverter caminhos sem usar vetores).
+     */
+    public boolean adicionarNoInicio(T elemento) {
+        No<T> novoNo = new No<>(elemento);
+        if (this.primeiro == null) {
+            this.primeiro = novoNo;
+            this.ultimo = novoNo;
+        } else {
+            novoNo.setProximo(this.primeiro);
+            this.primeiro = novoNo;
+        }
+        this.quantidade++;
+        return true;
+    }
+
     public boolean inserirElementoOrdenado(T elemento) {
         No<T> novo = new No<>(elemento);
         No<T> atual, anterior;
@@ -76,7 +92,14 @@ public class ListaEncadeada<T> implements IColecao<T> {
     public T pesquisar(T elemento) {
         No<T> aux = this.primeiro;
         while (aux != null) {
-            if (comparador.compare(aux.getValor(), elemento) == 0) {
+            boolean encontrado;
+            if (comparador != null) {
+                encontrado = comparador.compare(aux.getValor(), elemento) == 0;
+            } else {
+                encontrado = aux.getValor() == elemento
+                        || (aux.getValor() != null && aux.getValor().equals(elemento));
+            }
+            if (encontrado) {
                 return aux.getValor();
             }
             aux = aux.getProximo();
@@ -89,7 +112,14 @@ public class ListaEncadeada<T> implements IColecao<T> {
         No<T> aux = this.primeiro;
         No<T> anterior = null;
         while (aux != null) {
-            if (comparador.compare(aux.getValor(), elemento) == 0) {
+            boolean encontrado;
+            if (comparador != null) {
+                encontrado = comparador.compare(aux.getValor(), elemento) == 0;
+            } else {
+                encontrado = aux.getValor() == elemento
+                        || (aux.getValor() != null && aux.getValor().equals(elemento));
+            }
+            if (encontrado) {
                 if (aux == this.primeiro) {
                     this.primeiro = this.primeiro.getProximo();
                     if (aux == this.ultimo) {
@@ -113,6 +143,14 @@ public class ListaEncadeada<T> implements IColecao<T> {
     @Override
     public int quantidadeNos() {
         return this.quantidade;
+    }
+
+    public No<T> getPrimeiro() {
+        return this.primeiro;
+    }
+
+    public boolean estaVazia() {
+        return this.quantidade == 0;
     }
 
     @Override
