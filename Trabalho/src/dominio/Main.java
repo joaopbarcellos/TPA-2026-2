@@ -1,208 +1,26 @@
 package dominio;
 
-import java.util.Scanner;
+import apresentacao.TelaSistemaTransporte;
+import servico.TransporteServico;
 
-import arvoreBinaria.ArvoreAVL;
-import colecao.IColecao;
-import listaEncadeada.ListaEncadeada;
-import arvoreBinaria.ArvoreBinaria;
+import javax.swing.SwingUtilities;
+import java.io.File;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+/**
+ * Ponto de entrada do aplicativo de Roteamento de Transporte Público.
+ */
 public class Main {
     public static void main(String[] args) {
-        IColecao<Contato> listaContatoPorTelefone, listaContatoPorNome;
-        Scanner scanner = new Scanner(System.in);
-        try {
-            System.out.println("Qual lista encadeada deseja utilizar?");
-            System.out.println("1 - Lista Encadeada Ordenada");
-            System.out.println("2 - Lista Encadeada Não Ordenada");
-            System.out.println("3 - Árvore Binária");
-            System.out.println("4 - Árvore AVL");
-            int escolha = lerInteiro(scanner);
-            while (escolha < 1 || escolha > 4) {
-                System.out.println("Escolha inválida. Digite 1, 2 ou 3.");
-                escolha = lerInteiro(scanner);
+        SwingUtilities.invokeLater(() -> {
+            TransporteServico servico = new TransporteServico();
+            TelaSistemaTransporte tela = new TelaSistemaTransporte(servico);
+            tela.setVisible(true);
+
+            // Se o arquivo padrão gerado existir na raiz do projeto, já oferece o carregamento inicial
+            File arquivoPadrao = new File("malhaTransporteTeste.txt");
+            if (arquivoPadrao.exists()) {
+                servico.carregarDadosDoArquivo(arquivoPadrao.getPath());
             }
-            if (escolha == 1) {
-                listaContatoPorTelefone = new ListaEncadeada<Contato>(new ComparadorContatoPorTelefone(), true);
-                listaContatoPorNome = new ListaEncadeada<Contato>(new ComparadorContatoPorNome(), true);
-            } else if (escolha == 2) {
-                listaContatoPorTelefone = new ListaEncadeada<Contato>(new ComparadorContatoPorTelefone(), false);
-                listaContatoPorNome = new ListaEncadeada<Contato>(new ComparadorContatoPorNome(), false);
-            } else if (escolha == 3) {
-                listaContatoPorTelefone = new ArvoreBinaria<Contato>(new ComparadorContatoPorTelefone());
-                listaContatoPorNome = new ArvoreBinaria<Contato>(new ComparadorContatoPorNome());
-            } else {
-                listaContatoPorTelefone = new ArvoreAVL<Contato>(new ComparadorContatoPorTelefone());
-                listaContatoPorNome = new ArvoreAVL<Contato>(new ComparadorContatoPorNome());
-            }
-
-            int op = 0;
-
-            while (op != 7) {
-                printMenu();
-                op = lerInteiro(scanner);
-                switch (op) {
-                    case 1:
-                        LeitorArquivo leitor = new LeitorArquivo();
-                        leitor.lerArquivo(listaContatoPorNome, listaContatoPorTelefone);
-                        System.out.println(listaContatoPorNome.quantidadeNos() + " contatos carregados com sucesso!");
-                        break;
-                    case 2:
-                        System.out.println("Digite o nome do contato:");
-                        String nome = lerLinha(scanner);
-                        System.out.println("Digite o telefone do contato:");
-                        String telefone = lerLinha(scanner);
-
-                        long inicioAdicao = System.nanoTime();
-                        Contato novoContato = new Contato(nome, telefone);
-                        listaContatoPorNome.adicionar(novoContato);
-                        listaContatoPorTelefone.adicionar(novoContato);
-                        long tempoAdicao = System.nanoTime() - inicioAdicao;
-                        double tempoEmSegundos = tempoAdicao / 1_000_000_000.0;
-                        double tempoEmMilissegundos = tempoAdicao / 1_000_000.0;
-
-                        System.out.println("Contato adicionado com sucesso!");
-                        System.out.println("Tempo de adição: " + String.format("%.6f s | %.3f ms", tempoEmSegundos, tempoEmMilissegundos));
-                        break;
-                    case 3:
-                        System.out.println("Digite o nome do contato a ser pesquisado:");
-                        String nomePesquisa = lerLinha(scanner);
-                        Contato contatoNome = new Contato(nomePesquisa, "");
-                        inicioAdicao = System.nanoTime();
-                        Contato resultadoNome = listaContatoPorNome.pesquisar(contatoNome);
-                        if (resultadoNome != null) {
-                            System.out.println("Contato encontrado: " + resultadoNome);
-                            tempoAdicao = System.nanoTime() - inicioAdicao;
-                            tempoEmSegundos = tempoAdicao / 1_000_000_000.0;
-                            tempoEmMilissegundos = tempoAdicao / 1_000_000.0;
-                            System.out.println("Tempo de pesquisa: " + String.format("%.6f s | %.3f ms", tempoEmSegundos, tempoEmMilissegundos));
-                            break;
-                        }
-                        System.out.println("Contato não encontrado.");
-                        tempoAdicao = System.nanoTime() - inicioAdicao;
-                        tempoEmSegundos = tempoAdicao / 1_000_000_000.0;
-                        tempoEmMilissegundos = tempoAdicao / 1_000_000.0;
-                        System.out.println("Tempo de pesquisa: " + String.format("%.6f s | %.3f ms", tempoEmSegundos, tempoEmMilissegundos));
-                        break;
-                    case 4:
-                        System.out.println("Digite o telefone do contato a ser pesquisado:");
-                        String telefonePesquisa = lerLinha(scanner);
-                        Contato contatoTelefone = new Contato("", telefonePesquisa);
-                        inicioAdicao = System.nanoTime();
-                        Contato resultadoTelefone = listaContatoPorTelefone.pesquisar(contatoTelefone);
-                        if (resultadoTelefone != null) {
-                            System.out.println("Contato encontrado: " + resultadoTelefone);
-                            tempoAdicao = System.nanoTime() - inicioAdicao;
-                            tempoEmSegundos = tempoAdicao / 1_000_000_000.0;
-                            tempoEmMilissegundos = tempoAdicao / 1_000_000.0;
-                            System.out.println("Tempo de pesquisa: " + String.format("%.6f s | %.3f ms", tempoEmSegundos, tempoEmMilissegundos));
-                            break;
-                        }
-                        System.out.println("Contato não encontrado.");
-
-                        tempoAdicao = System.nanoTime() - inicioAdicao;
-                        tempoEmSegundos = tempoAdicao / 1_000_000_000.0;
-                        tempoEmMilissegundos = tempoAdicao / 1_000_000.0;
-                        System.out.println("Tempo de pesquisa: " + String.format("%.6f s | %.3f ms", tempoEmSegundos, tempoEmMilissegundos));
-                        break;
-                    case 5:
-                        System.out.println("Digite o telefone do contato a ser removido:");
-                        String telefoneRemover = lerLinha(scanner);
-                        Contato contatoRemover = new Contato("", telefoneRemover);
-                        inicioAdicao = System.nanoTime();
-                        resultadoTelefone = listaContatoPorTelefone.pesquisar(contatoRemover);
-                        if (resultadoTelefone == null) {
-                            System.out.println("Contato não encontrado");
-                            tempoAdicao = System.nanoTime() - inicioAdicao;
-                            tempoEmSegundos = tempoAdicao / 1_000_000_000.0;
-                            tempoEmMilissegundos = tempoAdicao / 1_000_000.0;
-                            System.out.println("Tempo de pesquisa: " + String.format("%.6f s | %.3f ms", tempoEmSegundos, tempoEmMilissegundos));
-                            break;
-                        }
-                        inicioAdicao = System.nanoTime();
-                        boolean removido = listaContatoPorTelefone.remover(resultadoTelefone);
-                        if (removido) {
-                            listaContatoPorNome.remover(resultadoTelefone);
-                            System.out.println("Contato removido com sucesso.");
-                            tempoAdicao = System.nanoTime() - inicioAdicao;
-                            tempoEmSegundos = tempoAdicao / 1_000_000_000.0;
-                            tempoEmMilissegundos = tempoAdicao / 1_000_000.0;
-                            System.out.println("Tempo de remoção: " + String.format("%.6f s | %.3f ms", tempoEmSegundos, tempoEmMilissegundos));
-                            break;
-                        }
-                        System.out.println("Contato não encontrado.");
-                        tempoAdicao = System.nanoTime() - inicioAdicao;
-                        tempoEmSegundos = tempoAdicao / 1_000_000_000.0;
-                        tempoEmMilissegundos = tempoAdicao / 1_000_000.0;
-                        System.out.println("Tempo de pesquisa: " + String.format("%.6f s | %.3f ms", tempoEmSegundos, tempoEmMilissegundos));
-                        break;
-                    case 6:
-                        System.out.println("Digite o nome do contato a ser alterado:");
-                        String nomeAlterar = lerLinha(scanner);
-                        Contato contatoAlterar = new Contato(nomeAlterar, "");
-                        inicioAdicao = System.nanoTime();
-                        Contato resultadoAlterar = listaContatoPorNome.pesquisar(contatoAlterar);
-                        if (resultadoAlterar != null) {
-                            System.out.println("Contato encontrado: " + resultadoAlterar);
-                            System.out.println("Digite o novo nome do contato:");
-                            String novoNome = lerLinha(scanner);
-                            System.out.println("Digite o novo telefone do contato:");
-                            String novoTelefone = lerLinha(scanner);
-                            listaContatoPorNome.remover(resultadoAlterar);
-                            listaContatoPorTelefone.remover(resultadoAlterar);
-                            Contato contatoAtualizado = new Contato(novoNome, novoTelefone);
-                            listaContatoPorNome.adicionar(contatoAtualizado);
-                            listaContatoPorTelefone.adicionar(contatoAtualizado);
-                            System.out.println("Contato atualizado com sucesso.");
-                            tempoAdicao = System.nanoTime() - inicioAdicao;
-                            tempoEmSegundos = tempoAdicao / 1_000_000_000.0;
-                            tempoEmMilissegundos = tempoAdicao / 1_000_000.0;
-                            System.out.println("Tempo de alteração: " + String.format("%.6f s | %.3f ms", tempoEmSegundos, tempoEmMilissegundos));
-                            break;
-                        }
-                        System.out.println("Contato não encontrado.");
-                        tempoAdicao = System.nanoTime() - inicioAdicao;
-                        tempoEmSegundos = tempoAdicao / 1_000_000_000.0;
-                        tempoEmMilissegundos = tempoAdicao / 1_000_000.0;
-                        System.out.println("Tempo de pesquisa: " + String.format("%.6f s | %.3f ms", tempoEmSegundos, tempoEmMilissegundos));
-                        break;
-                }
-            }
-            System.out.println("Quantidade total de contatos na lista: " + listaContatoPorNome.quantidadeNos());
-            System.out.println("Programa encerrado.");
-            scanner.close();
-        } catch (Exception e) {
-            scanner.close();
-            System.out.println("Erro: " + e.getMessage());
-        }
-    }
-
-    private static int lerInteiro(Scanner scanner) {
-        String entrada = scanner.nextLine().trim();
-        while (entrada.isEmpty()) {
-            entrada = scanner.nextLine().trim();
-        }
-        return Integer.parseInt(entrada);
-    }
-
-    private static String lerLinha(Scanner scanner) {
-        String entrada = scanner.nextLine().trim();
-        while (entrada.isEmpty()) {
-            entrada = scanner.nextLine().trim();
-        }
-        return entrada;
-    }
-
-    public static void printMenu() {
-        System.out.println("O que deseja fazer?");
-        System.out.println("1 - Carregar dados de arquivo");
-        System.out.println("2 - Adicionar contato");
-        System.out.println("3 - Pesquisar contato por nome");
-        System.out.println("4 - Pesquisar contato por telefone");
-        System.out.println("5 - Remover contato por telefone");
-        System.out.println("6 - Alterar dados de contato");
-        System.out.println("7 - Sair");
+        });
     }
 }

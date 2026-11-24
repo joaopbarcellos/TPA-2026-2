@@ -2,14 +2,17 @@ package grafo;
 
 import listaEncadeada.ListaEncadeada;
 
-/** Vértice genérico que guarda seu valor e a lista de adjacências. */
+/**
+ * Representa um ponto no grafo (no domínio, uma parada ou estação)
+ * e mantém sua lista de adjacências (conexões de saída).
+ */
 public class Vertice<T> {
     private T valor;
-    private ListaEncadeada<Aresta<T>> destinos;
+    private ListaEncadeada<Aresta<T>> adjacencias;
 
     public Vertice(T valor) {
         this.valor = valor;
-        this.destinos = new ListaEncadeada<>();
+        this.adjacencias = new ListaEncadeada<>();
     }
 
     public T getValor() {
@@ -21,15 +24,16 @@ public class Vertice<T> {
     }
 
     public ListaEncadeada<Aresta<T>> getDestinos() {
-        return destinos;
+        return adjacencias;
     }
 
     public void adicionarDestino(Vertice<T> destino, float peso) {
-        destinos.adicionar(new Aresta<T>(destino, peso));
+        adjacencias.adicionar(new Aresta<>(destino, peso));
     }
 
     @Override
     public boolean equals(Object objeto) {
+        if (this == objeto) return true;
         if (!(objeto instanceof Vertice)) return false;
         Vertice<?> outro = (Vertice<?>) objeto;
         return valor == outro.valor || (valor != null && valor.equals(outro.valor));

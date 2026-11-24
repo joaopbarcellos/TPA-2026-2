@@ -29,6 +29,22 @@ public class ListaEncadeada<T> implements IColecao<T> {
         return inserirElementoNaoOrdenado(elemento);
     }
 
+    /**
+     * Insere um elemento no início da lista (útil para inverter caminhos sem usar vetores).
+     */
+    public boolean adicionarNoInicio(T elemento) {
+        No<T> novoNo = new No<>(elemento);
+        if (this.primeiro == null) {
+            this.primeiro = novoNo;
+            this.ultimo = novoNo;
+        } else {
+            novoNo.setProximo(this.primeiro);
+            this.primeiro = novoNo;
+        }
+        this.quantidade++;
+        return true;
+    }
+
     public boolean inserirElementoOrdenado(T elemento) {
         No<T> novo = new No<>(elemento);
         No<T> atual, anterior;
@@ -131,6 +147,10 @@ public class ListaEncadeada<T> implements IColecao<T> {
 
     public No<T> getPrimeiro() {
         return this.primeiro;
+    }
+
+    public boolean estaVazia() {
+        return this.quantidade == 0;
     }
 
     @Override

@@ -1,6 +1,9 @@
 package grafo;
 
-/** Resultado do Dijkstra para um vértice específico. */
+/**
+ * Armazena o estado de cada vértice durante a execução do algoritmo de Dijkstra:
+ * o menor tempo acumulado até ele e o vértice anterior na rota.
+ */
 public class ResultadoDijkstra<T> {
     private Vertice<T> vertice;
     private float distancia;
@@ -34,8 +37,7 @@ public class ResultadoDijkstra<T> {
 
     @Override
     public String toString() {
-        String textoDistancia = distancia == Float.POSITIVE_INFINITY
-                ? "infinito" : String.valueOf(distancia);
-        return vertice.getValor() + " = " + textoDistancia;
+        String tempo = (distancia == Float.POSITIVE_INFINITY) ? "inalcançável" : distancia + " min";
+        return vertice.getValor() + " -> " + tempo;
     }
 }
